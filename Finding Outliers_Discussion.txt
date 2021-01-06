@@ -1,0 +1,110 @@
+by:- shubham Chaudhari
+
+Here , we Discussed here Mehtods of finding an outilers and their treatement.
+
+
+--------------------------------------------------------------------------------------------
+Outliers Defination :- 
+********************
+
+basically outliers is nothing but observation that lies an abnormal 
+distance from other values in a random sample from a population. 
+
+**********************************************************************
+How To find Outliers?
+-- 
+There are several methods oof finding the outliers .
+ 	 1.Using the imperical Formulae(when data is normally distrubuted)
+ 	 2. IQR (inter Quantile range method)
+  	 3.Box_plot
+  	 4.Scatter diagram 
+	 5. By clustering methods
+ 
+Discussion about the Evaluaing the Outliers .
+
+ method 1> Using Imperical formulae :- 
+************************************
+As we know that , whenever the data is normaly distrubuted ,then it follows the Imoperical formulae.
+Imperical formulae states that :- 
+within ( mean + 1 std.deviation)---> 68.5% data exist
+whitin (mean + 2nd std deviatiation)---->95.44% data exist 
+whitin (mean + 3rd std deviatiation)---->99.72% data exist 
+hence based on that we can find out the upper boundary as well as lower boundary.
+therefore , 
+ upper_boundary = mean + (3 * std_deviation)
+ lower_boundary = mean - (3* std_deviation)
+
+The data lies outside of the both of the boundaries (upper_boundary & Lower_boundary) 
+is called as the Outliers..
+Note : -   this method is only applicable to the Normally distrubuted data.
+--------------------------------------------------------------------------------------------------------
+
+method 2 > IQR method : - 
+**********************
+ This method is applicable to the skewed data either(positive/negative skewed).
+skewed data is not follows the imperical formulae , hence we don't use the above method.
+ Process : - 
+    	1. find out the mean.
+	2. find out IQR = (quantile(0.75) - quantile(0.25))
+	3. upper_boundary = mean + (1.5) IQR ------> (for Positively skewed ) 
+	4.lower_boundary = mean - (1.5)IQR  -------->(for negarively skewed)
+sometimes the extrem Upper and Lower boundary is used. in that case we only replace 1.5 by 3.
+Extreme_UpperBoundary = mean  + (3)IQR
+Extreme_LowerBoundary = mean - (3)IQR 
+
+The point outside the boundaries are considered as an Outliers.
+------------------------------------------------------------------------------------------
+
+method 3 >  BOX_PLOT method :- 
+******************************
+ Boxplots are a standardized way of displaying the distribution of data based on a five number summary 
+(“minimum”, first quartile (Q1), median, third quartile (Q3), and “maximum”).
+This type of plot is used to easily detect outliers. 
+It can also tell us if your data is symmetrical, how tightly your data is grouped, and if and how your data
+ is skewed.
+
+Thw bubbles present above and below the  maximum ( mean + 1.5IQR ) value and minimum values (mean - 1.5IQR)
+respectively , known as an Outliers.
+
+--------------------------------------------------------------------------------------------------
+method 4 ) -- Using Clustering (DBSCAN) 
+*************************************
+
+In DBSCAN clustering the data points which are neither the core point or boundaries are
+considered as an Outliers : 
+how to interprete outliers ? 
+ generally, the Ouliers having cluster value (-1) ..
+by extracting the len(-1:cluster) we get to know that number of outliers present in 
+dataset.
+
+Hand On :- 
+>from sklearn.clustering import DBSCAN
+>db = DBSCAN(eps = 0.4 ,Minpts = 11 )
+>y_pred = db.fit_predict(x)
+# here , we get y_pred values in terms of clusters 
+#lets find_out the total number of cluster 
+
+>no_clusters = len(set(y_pred)) - (1 if -1 in y_pred else 0 )
+#here , we get the number of clusters
+#lets finding out the number of  outliers present in dataset.
+
+>numOutliers = list(y_pred).count(-1)
+
+#### findout the location of the outliers
+>x[y_pred==-1] 
+#--> it will give us the total records having an Outliers 
+
+*****************************************************************************************************************
+-------------------------------------------------------------------------------------------------------------------
+Outliers_treatments:- 
+1. sometime ,  we can remove the outliers.if we have the large datasets and also depends on the problem statement 
+2. Transformation : -  sometimes , removing the ouliers considered as the lost of information .
+                       In health care project or the stock market analysis we can't drop the ouliers.
+			at that time we can kept is as it is .
+			or can be transformed in to the max_value . 
+			replace ouliers----> max_values.
+
+
+ 
+	
+	
